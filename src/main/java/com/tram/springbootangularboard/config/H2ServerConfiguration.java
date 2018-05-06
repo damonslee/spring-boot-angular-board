@@ -11,8 +11,7 @@ import org.springframework.context.annotation.Profile;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 
-@Configuration
-@Profile("local")
+
 public class H2ServerConfiguration {
 
     @Value("${spring.h2.db.tcpPort}")

@@ -27,9 +27,12 @@ repositories {
 	mavenCentral()
 }
 
+def staticDir = "$projectDir/src/main/webapp"
+
 sourceSets {
 	main.kotlin.srcDirs += 'src/main/java'
 	main.java.srcDirs += 'src/main/java'
+	main.resources.srcDirs = ["$staticDir/dist", "$projectDir/src/main/resources"]
 }
 
 dependencies {
@@ -45,4 +48,34 @@ dependencies {
 	compile('com.h2database:h2')
 	compileOnly('org.projectlombok:lombok')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+processResources {
+	dependsOn "buildAngular"
+}
+
+task buildAngular(type:Exec) {
+	// installAngular should be run prior to this task
+	dependsOn "installAngular"
+	workingDir "$staticDir"
+	inputs.dir "$staticDir"
+	// Add task to the standard build group
+	group = BasePlugin.BUILD_GROUP
+	// ng doesn't exist as a file in windows -> ng.cmd
+	if (System.getProperty("os.name").toUpperCase().contains("WINDOWS")){
+		commandLine "ng.cmd", "build"
+	} else {
+		commandLine "ng", "build"
+	}
+}
+
+task installAngular(type:Exec) {
+	workingDir "$staticDir"
+	inputs.dir "$staticDir"
+	group = BasePlugin.BUILD_GROUP
+	if (System.getProperty("os.name").toUpperCase().contains("WINDOWS")){
+		commandLine "npm.cmd", "install"
+	} else {
+		commandLine "npm", "install"
+	}
 }
