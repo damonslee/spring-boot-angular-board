@@ -1,5 +1,6 @@
 package com.tram.springbootangularboard.controller;
 
+import com.tram.springbootangularboard.domain.AccountRepository;
 import com.tram.springbootangularboard.domain.Posts;
 import com.tram.springbootangularboard.domain.PostsRepository;
 import com.tram.springbootangularboard.dto.PostsSaveRequestDto;
@@ -17,6 +18,8 @@ import java.util.List;
 public class PostsRestController {
     @Autowired
     private PostsRepository postsRepository;
+    @Autowired
+    private AccountRepository accountRepository;
 
     @GetMapping("")
     public ResponseEntity<List<Posts>> read() {
