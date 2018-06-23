@@ -22,7 +22,7 @@ public class PostRestController {
     public ResponseEntity<List<Posts>> read() {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
-        return new ResponseEntity<>(postRepository.findAll(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity(postRepository.findAll(), responseHeaders, HttpStatus.OK);
     }
 
     @PostMapping("")
@@ -30,7 +30,7 @@ public class PostRestController {
         postRepository.save(postsSaveRequestDto.toEntity());
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
 }
