@@ -1,7 +1,7 @@
 package com.tram.springbootangularboard.controller;
 
 import com.tram.springbootangularboard.domain.Posts;
-import com.tram.springbootangularboard.domain.PostsRepository;
+import com.tram.springbootangularboard.domain.PostRepository;
 import com.tram.springbootangularboard.dto.PostsSaveRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -14,20 +14,20 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
-public class PostsRestController {
+public class PostRestController {
     @Autowired
-    private PostsRepository postsRepository;
+    private PostRepository postRepository;
 
     @GetMapping("")
     public ResponseEntity<List<Posts>> read() {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
-        return new ResponseEntity<>(postsRepository.findAll(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(postRepository.findAll(), responseHeaders, HttpStatus.OK);
     }
 
     @PostMapping("")
     public ResponseEntity create(@RequestBody PostsSaveRequestDto postsSaveRequestDto) {
-        postsRepository.save(postsSaveRequestDto.toEntity());
+        postRepository.save(postsSaveRequestDto.toEntity());
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<>(HttpStatus.CREATED);
