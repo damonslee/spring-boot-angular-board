@@ -20,14 +20,14 @@ public class PostRepositoryTest {
     @Test
     @Transactional
     public void 게시글작성테스트 () {
-        Posts posts = new Posts();
+        Post post = new Post();
 
-        postRepository.save(posts.builder()
+        postRepository.save(post.builder()
                 .title("제목")
                 .content("내용")
                 .author("규남").build());
-        List<Posts> insertedPosts = postRepository.findAll();
-        Posts insertedPost = insertedPosts.get(0);
+        List<Post> insertedPosts = postRepository.findAll();
+        Post insertedPost = insertedPosts.get(0);
         assertEquals("제목", insertedPost.getTitle());
         assertEquals("내용", insertedPost.getContent());
         assertEquals("규남", insertedPost.getAuthor());

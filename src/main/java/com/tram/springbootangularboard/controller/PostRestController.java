@@ -1,6 +1,6 @@
 package com.tram.springbootangularboard.controller;
 
-import com.tram.springbootangularboard.domain.Posts;
+import com.tram.springbootangularboard.domain.Post;
 import com.tram.springbootangularboard.domain.PostRepository;
 import com.tram.springbootangularboard.dto.PostsSaveRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class PostRestController {
     private PostRepository postRepository;
 
     @GetMapping("")
-    public ResponseEntity<List<Posts>> read() {
+    public ResponseEntity<List<Post>> read() {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity(postRepository.findAll(), responseHeaders, HttpStatus.OK);
