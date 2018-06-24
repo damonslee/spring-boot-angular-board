@@ -5,8 +5,8 @@ import com.tram.springbootangularboard.domain.Account;
 import com.tram.springbootangularboard.domain.AccountRepository;
 import com.tram.springbootangularboard.security.AccountContext;
 import com.tram.springbootangularboard.security.AccountContextService;
-import com.tram.springbootangularboard.security.tokens.PostAuthorizationToekn;
-import com.tram.springbootangularboard.security.tokens.PreAuthorizationToken;
+import com.tram.springbootangularboard.security.token.PostAuthorizationToekn;
+import com.tram.springbootangularboard.security.token.PreAuthorizationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -44,6 +44,6 @@ public class FormLoginAuthenticationProvider implements AuthenticationProvider {
     }
 
     private boolean isCorrectPassword(String password, Account account) {
-        return CommonUtils.bCryptPasswordEncoder().matches(password, account.getPassword());
+        return CommonUtils.getBCryptPasswordEncoder().matches(password, account.getPassword());
     }
 }
