@@ -29,6 +29,7 @@ public class Account {
     private String password;
 
     @Column(name = "account_role")
+    @ElementCollection
     @Enumerated(value = EnumType.STRING)
     private List<UserRole> userRole;
 
