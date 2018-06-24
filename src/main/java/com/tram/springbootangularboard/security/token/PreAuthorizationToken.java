@@ -1,12 +1,15 @@
 package com.tram.springbootangularboard.security.token;
 
+import com.tram.springbootangularboard.dto.FormLoginDto;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 public class PreAuthorizationToken extends UsernamePasswordAuthenticationToken {
-    public PreAuthorizationToken(String userId, String password) {
+    private PreAuthorizationToken(String userId, String password) {
         super(userId, password);
     }
-
+    public PreAuthorizationToken(FormLoginDto formLoginDto) {
+        this(formLoginDto.getUserId(), formLoginDto.getPassword());
+    }
     public String getUserId() {
         return (String)super.getPrincipal();
     }
