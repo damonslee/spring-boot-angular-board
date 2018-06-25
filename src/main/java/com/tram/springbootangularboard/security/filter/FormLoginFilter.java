@@ -26,7 +26,7 @@ public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
     }
 
     public FormLoginFilter(String defaultFilterProcessesUrl, AuthenticationSuccessHandler authenticationSuccessHandler, AuthenticationFailureHandler authenticationFailureHandler) {
-        super(defaultFilterProcessesUrl);
+        this(defaultFilterProcessesUrl);
         this.authenticationSuccessHandler = authenticationSuccessHandler;
         this.authenticationFailureHandler = authenticationFailureHandler;
     }
@@ -48,10 +48,6 @@ public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
     //TODO AuthenticationFailureHandler 직접 구현해서 적절한 응답을 리턴하도록 수정할 것
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        AuthenticationFailureHandler authenticationFailureHandler = (req, res, exception) -> {
-            Logger logger = LoggerFactory.getLogger(FormLoginFilter.class);
-            logger.error(exception.getMessage());
-        };
-        authenticationFailureHandler.onAuthenticationFailure(request, response, failed);
+        this.authenticationFailureHandler.onAuthenticationFailure(request, response, failed);
     }
 }
