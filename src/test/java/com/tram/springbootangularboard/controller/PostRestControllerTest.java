@@ -1,6 +1,6 @@
 package com.tram.springbootangularboard.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tram.springbootangularboard.common.CommonUtils;
 import com.tram.springbootangularboard.domain.PostRepository;
 import com.tram.springbootangularboard.dto.PostsSaveRequestDto;
 import org.junit.Test;
@@ -18,7 +18,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(PostRestController.class)
+//secure false를 하지 않으면 Spring Security 디폴트 설정이 들어가서 권한 문제가 발생.
+@WebMvcTest(value = PostRestController.class, secure = false)
 public class PostRestControllerTest {
 
     @Autowired
@@ -42,19 +43,10 @@ public class PostRestControllerTest {
         param.setContent("내용");
         param.setAuthor("tram");
         this.mockMvc.perform(post("/api/posts")
-                .content(asJsonString(param))
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON))
+                .content(CommonUtils.getObjectMapper().writeValueAsBytes(param))
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andReturn();
-    }
-
-    private static String asJsonString(final Object obj) {
-        try {
-            return new ObjectMapper().writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 }
