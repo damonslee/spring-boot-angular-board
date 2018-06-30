@@ -1,12 +1,13 @@
 package com.tram.springbootangularboard.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tram.springbootangularboard.common.CommonUtils;
+import com.tram.springbootangularboard.domain.PostRepository;
 import com.tram.springbootangularboard.dto.PostsSaveRequestDto;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -17,12 +18,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
-@AutoConfigureMockMvc
-public class PostsRestControllerTest {
+//secure false를 하지 않으면 Spring Security 디폴트 설정이 들어가서 권한 문제가 발생.
+@WebMvcTest(value = PostRestController.class, secure = false)
+public class PostRestControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private PostRepository postRepository;
 
     @Test
     public void read() throws Exception {
@@ -39,19 +43,10 @@ public class PostsRestControllerTest {
         param.setContent("내용");
         param.setAuthor("tram");
         this.mockMvc.perform(post("/api/posts")
-                .content(asJsonString(param))
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON))
+                .content(CommonUtils.getObjectMapper().writeValueAsBytes(param))
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andReturn();
-    }
-
-    private static String asJsonString(final Object obj) {
-        try {
-            return new ObjectMapper().writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 }
