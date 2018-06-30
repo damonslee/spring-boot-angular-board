@@ -20,17 +20,13 @@ public class PostRestController {
 
     @GetMapping("")
     public ResponseEntity<List<Post>> read() {
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
-        return new ResponseEntity(postRepository.findAll(), responseHeaders, HttpStatus.OK);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(postRepository.findAll());
     }
 
     @PostMapping("")
     public ResponseEntity create(@RequestBody PostsSaveRequestDto postsSaveRequestDto) {
         postRepository.save(postsSaveRequestDto.toEntity());
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
-        return new ResponseEntity(HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).contentType(MediaType.APPLICATION_JSON_UTF8).body("게시글이 작성되었습니다.");
     }
 
 }
