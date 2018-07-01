@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local
+    active: dev
 
 ---
 spring:
@@ -13,4 +13,27 @@ spring:
     console:
       enabled: true
 jwt:
-  secret-key: jwtlocaltest
+  secret-key: jwtlocalkey
+npm:
+  path: /Users/kyunam/Documents/workspace-intelliJ/spring-boot-angular-board/src/main/webapp
+
+---
+spring:
+  profiles: dev
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+  h2:
+    console:
+      enabled: true
+jwt:
+  secret-key: jwtdevlopkey
+
+---
+spring:
+  profiles: real
+
+spring:
+  profiles:
+    include: real-db
