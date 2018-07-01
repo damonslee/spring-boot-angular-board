@@ -1,9 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-
+import { CoreModule } from '../app/core/core.module';
 import { AppComponent } from './app.component';
-import { ClarityModule } from "@clr/angular";
+import { ClarityModule } from '@clr/angular';
 
 
 @NgModule({
@@ -12,7 +12,8 @@ import { ClarityModule } from "@clr/angular";
   ],
   imports: [
     BrowserModule,
-    ClarityModule
+    ClarityModule,
+    CoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]
