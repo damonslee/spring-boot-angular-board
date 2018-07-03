@@ -1,0 +1,19 @@
+<div class="login-wrapper">
+    <form class="login" #loginForm="ngForm" role="form">
+        <section class="title">
+            <h3 class="welcome">로그인</h3>
+
+            <h5 class="hint">아이디와 비밀번호를 입력하세요</h5>
+        </section>
+        <div class="login-group">
+            <input class="username" [(ngModel)]="userId" required type="text" type="text" name="userId" placeholder="아이디">
+            <input class="password" [(ngModel)]="password" required type="password" type="password" name="password" placeholder="비밀번호">
+            <!-- <div class="error active">
+                Invalid user name or password
+            </div> -->
+            <button (click)="login()" class="btn btn-primary btn-block">로그인</button>
+            <button type="submit" class="btn btn-success btn-block">페이스북으로 로그인</button>
+            <a href="javascript://" class="signup">회원가입 페이지로 이동</a>
+        </div>
+    </form>
+</div>

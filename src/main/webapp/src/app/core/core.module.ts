@@ -1,14 +1,19 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { NaviComponent } from './navi/navi.component';
-import { ClarityModule } from '@clr/angular';
+import { CommonModule } from '@angular/common';
+import { LoginComponent } from './login/login.component';
+import { SharedModule } from '../shared/shared.module';
+import { FormsModule } from '@angular/forms';
+
 
 @NgModule({
   imports: [
     CommonModule,
-    ClarityModule
+    SharedModule,
+    FormsModule
   ],
-  declarations: [NaviComponent],
-  exports: [NaviComponent]
+  declarations: [NaviComponent, LoginComponent],
+  exports: [NaviComponent, LoginComponent]
 })
 export class CoreModule { }

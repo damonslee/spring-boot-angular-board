@@ -3,8 +3,15 @@ import { NgModule } from '@angular/core';
 
 import { CoreModule } from '../app/core/core.module';
 import { AppComponent } from './app.component';
-import { ClarityModule } from '@clr/angular';
+import { Route, RouterModule, Routes } from '@angular/router';
+import { LoginComponent } from './core/login/login.component';
+import { SharedModule } from './shared/shared.module';
 
+const routes:Routes = [
+  {
+    path: 'signin', component: LoginComponent
+  }
+];
 
 @NgModule({
   declarations: [
@@ -12,8 +19,9 @@ import { ClarityModule } from '@clr/angular';
   ],
   imports: [
     BrowserModule,
-    ClarityModule,
-    CoreModule
+    SharedModule,
+    CoreModule,
+    RouterModule.forRoot(routes)
   ],
   providers: [],
   bootstrap: [AppComponent]

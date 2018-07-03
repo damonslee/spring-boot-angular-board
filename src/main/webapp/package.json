@@ -27,7 +27,10 @@
     "@clr/icons": "^0.11.23",
     "@clr/ui": "^0.11.23",
     "@webcomponents/custom-elements": "^1.1.2",
+    "bootstrap": "^3.3.7",
     "core-js": "^2.5.7",
+    "css-spaces": "^0.3.5",
+    "font-awesome": "^4.7.0",
     "rxjs": "^5.5.11",
     "zone.js": "^0.8.19"
   },
