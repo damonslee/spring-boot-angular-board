@@ -19,7 +19,9 @@ public class JwtFactory {
         String jwtToken = null;
         try {
             jwtToken = JWT.create().withIssuer("tram")
-                    .withArrayClaim("role", accountContext.getAuthorities().stream()
+                    .withClaim("USERNAME", accountContext.getAccount().getUsername())
+                    .withClaim("USER_ID", accountContext.getAccount().getUserId())
+                    .withArrayClaim("AUTHORITIES", accountContext.getAuthorities().stream()
                             .map(r -> r.getAuthority()).toArray(String[]::new))
                     .sign(generateAlgorithm());
         } catch (Exception e) {
