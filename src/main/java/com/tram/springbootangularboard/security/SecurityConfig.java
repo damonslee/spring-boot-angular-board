@@ -1,8 +1,11 @@
 package com.tram.springbootangularboard.security;
 
 import com.tram.springbootangularboard.security.filter.FormLoginFilter;
+import com.tram.springbootangularboard.security.filter.JwtAuthenticationFilter;
 import com.tram.springbootangularboard.security.handler.FormLoginAuthenticationSuccessHandler;
+import com.tram.springbootangularboard.security.handler.JwtAuthenticationFailureHandler;
 import com.tram.springbootangularboard.security.provider.FormLoginAuthenticationProvider;
+import com.tram.springbootangularboard.security.provider.JwtAuthenticationProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.text.Normalizer;
+import java.util.Arrays;
 
 //아래 두 어노테이션은 기본 default 보안 설정을 초기화한다. actuator 보안은 그대로 유지.
 @Configuration
@@ -30,6 +34,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private FormLoginAuthenticationProvider formLoginAuthenticationProvider;
     @Autowired
     private FormLoginAuthenticationSuccessHandler formLoginAuthenticationSuccessHandler;
+    @Autowired
+    private JwtAuthenticationProvider jwtAuthenticationProvider;
+    @Autowired
+    private HeaderTokenExtractor headerTokenExtractor;
+    @Autowired
+    private JwtAuthenticationFailureHandler jwtAuthenticationFailureHandler;
 
     protected FormLoginFilter formLoginFilter() throws Exception {
         FormLoginFilter filter = new FormLoginFilter("/login", formLoginAuthenticationSuccessHandler, (req, res, exception) -> {
@@ -38,6 +48,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         });
         filter.setAuthenticationManager(super.authenticationManagerBean());
         return filter;
+    }
+
+    protected JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
+        FilterSkipMatcher filterSkipMatcher = new FilterSkipMatcher(Arrays.asList("/login"), "/api/**");
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(filterSkipMatcher, jwtAuthenticationFailureHandler, headerTokenExtractor);
+        jwtAuthenticationFilter.setAuthenticationManager(super.authenticationManagerBean());
+        return jwtAuthenticationFilter;
     }
 
     @Bean
@@ -50,6 +67,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //FormLoginAuthenticationProvider 등록
         auth.authenticationProvider(this.formLoginAuthenticationProvider);
+        //JwtAuthenticationProvider 등록
+        auth.authenticationProvider(this.jwtAuthenticationProvider);
     }
 
     @Override
@@ -60,6 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();
         //UsernamePasswordAuthenticationFilter 앞에 FormLoginFilter 추가
         http.addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 }

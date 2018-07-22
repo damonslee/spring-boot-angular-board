@@ -4,8 +4,7 @@ import com.tram.springbootangularboard.common.CommonUtils;
 import com.tram.springbootangularboard.domain.Account;
 import com.tram.springbootangularboard.domain.AccountRepository;
 import com.tram.springbootangularboard.security.AccountContext;
-import com.tram.springbootangularboard.security.AccountContextService;
-import com.tram.springbootangularboard.security.token.PostAuthorizationToekn;
+import com.tram.springbootangularboard.security.token.PostAuthorizationToken;
 import com.tram.springbootangularboard.security.token.PreAuthorizationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -33,7 +32,7 @@ public class FormLoginAuthenticationProvider implements AuthenticationProvider {
 
         Account account = accountRepository.findByUserId(userId).orElseThrow(() -> new NoSuchElementException("계정 정보를 찾을 수 없습니다."));
         if(isCorrectPassword(password, account)) {
-            return PostAuthorizationToekn.getFromAccountContext(AccountContext.fromAccount(account));
+            return PostAuthorizationToken.getFromAccountContext(AccountContext.fromAccount(account));
         }
 
         throw new NoSuchElementException("인증 정보를 찾을 수 없습니다.");

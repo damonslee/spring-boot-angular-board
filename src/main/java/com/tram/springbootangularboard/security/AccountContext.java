@@ -17,6 +17,10 @@ public class AccountContext extends User {
         this.account = account;
     }
 
+    public AccountContext(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+        super(username, password, authorities);
+    }
+
     public static AccountContext fromAccount(Account account) {
         return new AccountContext(account, account.getUserId(), account.getPassword(), convertSimpleGrantedAuthorities(account.getUserRole()));
     }
