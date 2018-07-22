@@ -8,7 +8,9 @@ import com.tram.springbootangularboard.domain.PostRepository;
 import com.tram.springbootangularboard.domain.UserRole;
 import com.tram.springbootangularboard.dto.FormLoginDto;
 import com.tram.springbootangularboard.security.handler.FormLoginAuthenticationSuccessHandler;
+import com.tram.springbootangularboard.security.handler.JwtAuthenticationFailureHandler;
 import com.tram.springbootangularboard.security.provider.FormLoginAuthenticationProvider;
+import com.tram.springbootangularboard.security.provider.JwtAuthenticationProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -34,7 +36,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {JwtFactory.class, SecurityConfig.class, FormLoginAuthenticationProvider.class, FormLoginAuthenticationSuccessHandler.class})
+@SpringBootTest(classes = {JwtDecoder.class, HeaderTokenExtractor.class,
+        JwtAuthenticationFailureHandler.class,
+        JwtAuthenticationProvider.class,
+        JwtFactory.class, SecurityConfig.class,
+        FormLoginAuthenticationProvider.class,
+        FormLoginAuthenticationSuccessHandler.class})
 @AutoConfigureMockMvc
 @EnableConfigurationProperties(JwtProperties.class)
 public class SecurityTest {
@@ -46,7 +53,7 @@ public class SecurityTest {
     @Test
     public void loginSuccessTest() throws Exception {
         given(accountRepository.findByUserId("xmfpes")).willReturn(Optional.ofNullable(Account.builder()
-                .userId("xmfpes").password(CommonUtils.getBCryptPasswordEncoder().encode("1234")).userRole(Arrays.asList(UserRole.USER)).build()));
+                .userId("xmfpes").password(CommonUtils.getBCryptPasswordEncoder().encode("1234")).username("kyuNam").userRole(Arrays.asList(UserRole.ROLE_USER)).build()));
         this.mockMvc.perform(post("/login")
                 .content(CommonUtils.getObjectMapper().writeValueAsBytes(new FormLoginDto("xmfpes", "1234")))
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -59,7 +66,7 @@ public class SecurityTest {
     @Test(expected = NoSuchElementException.class)
     public void loginFailureTest() throws Exception {
         given(accountRepository.findByUserId("xmfpes")).willReturn(Optional.ofNullable(Account.builder()
-                .userId("xmfpes").password(CommonUtils.getBCryptPasswordEncoder().encode("1234")).userRole(Arrays.asList(UserRole.USER)).build()));
+                .userId("xmfpes").password(CommonUtils.getBCryptPasswordEncoder().encode("1234")).userRole(Arrays.asList(UserRole.ROLE_USER)).build()));
         this.mockMvc.perform(post("/login")
                 .content(CommonUtils.getObjectMapper().writeValueAsBytes(new FormLoginDto("xmfpes", "5555")))
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)

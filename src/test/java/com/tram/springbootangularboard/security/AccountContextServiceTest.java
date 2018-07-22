@@ -33,7 +33,7 @@ public class AccountContextServiceTest {
     @Test
     public void loadAccountByUserId() {
         given(accountRepository.findByUserId("testId")).willReturn(Optional.ofNullable(Account.builder()
-                .userId("testId").password("password").userRole(Arrays.asList(UserRole.USER)).build()));
+                .userId("testId").password("password").userRole(Arrays.asList(UserRole.ROLE_USER)).build()));
         assertNotNull(accountContextService.loadAccountByUserId("testId"));
     }
 
@@ -44,7 +44,7 @@ public class AccountContextServiceTest {
     @Test(expected = NoSuchElementException.class)
     public void loadAccountByUserIdExceptionTest() {
         given(accountRepository.findByUserId("testId")).willReturn(Optional.ofNullable(Account.builder()
-                .userId("testId").password("password").userRole(Arrays.asList(UserRole.USER)).build()));
+                .userId("testId").password("password").userRole(Arrays.asList(UserRole.ROLE_USER)).build()));
         accountContextService.loadAccountByUserId("noId");
     }
 
