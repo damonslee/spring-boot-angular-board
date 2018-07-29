@@ -18,10 +18,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.text.Normalizer;
 import java.util.Arrays;
 
 //아래 두 어노테이션은 기본 default 보안 설정을 초기화한다. actuator 보안은 그대로 유지.
@@ -51,7 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     protected JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        FilterSkipMatcher filterSkipMatcher = new FilterSkipMatcher(Arrays.asList("/login"), "/api/**");
+        //회원가입과 로그인의 경우 Jwt 인증을 패스한다.
+        FilterSkipMatcher filterSkipMatcher = new FilterSkipMatcher(Arrays.asList("/login", "/sign-up"), "/api/**");
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(filterSkipMatcher, jwtAuthenticationFailureHandler, headerTokenExtractor);
         jwtAuthenticationFilter.setAuthenticationManager(super.authenticationManagerBean());
         return jwtAuthenticationFilter;

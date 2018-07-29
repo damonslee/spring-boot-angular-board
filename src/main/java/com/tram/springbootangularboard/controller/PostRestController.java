@@ -10,7 +10,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -23,10 +25,17 @@ public class PostRestController {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(postRepository.findAll());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Post> readDetail(@PathVariable Long id) {
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(postRepository.findById(id).orElseThrow(() -> new NoSuchElementException("해당하는 게시물을 찾을 수 없습니다.")));
+    }
+
     @PostMapping("")
     public ResponseEntity create(@RequestBody PostsSaveRequestDto postsSaveRequestDto) {
-        postRepository.save(postsSaveRequestDto.toEntity());
-        return ResponseEntity.status(HttpStatus.CREATED).contentType(MediaType.APPLICATION_JSON_UTF8).body("게시글이 작성되었습니다.");
+        Post savedPost = postRepository.save(postsSaveRequestDto.toEntity());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create("/api/posts/" + savedPost.getId()));
+        return ResponseEntity.status(HttpStatus.CREATED).contentType(MediaType.APPLICATION_JSON_UTF8).headers(headers).build();
     }
 
 }
