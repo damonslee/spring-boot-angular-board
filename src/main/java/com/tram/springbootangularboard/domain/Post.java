@@ -9,7 +9,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name="posts")
-public class Post {
+public class Post extends AuditorEntity{
     @Id
     @GeneratedValue
     @Column(name="post_id")
