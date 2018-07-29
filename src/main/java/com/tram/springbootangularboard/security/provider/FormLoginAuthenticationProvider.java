@@ -1,17 +1,18 @@
 package com.tram.springbootangularboard.security.provider;
 
-import com.tram.springbootangularboard.common.CommonUtils;
 import com.tram.springbootangularboard.domain.Account;
 import com.tram.springbootangularboard.domain.AccountRepository;
 import com.tram.springbootangularboard.security.AccountContext;
-import com.tram.springbootangularboard.security.AccountContextService;
-import com.tram.springbootangularboard.security.token.PostAuthorizationToekn;
+import com.tram.springbootangularboard.security.token.PostAuthorizationToken;
 import com.tram.springbootangularboard.security.token.PreAuthorizationToken;
+import com.tram.springbootangularboard.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 
@@ -22,18 +23,22 @@ public class FormLoginAuthenticationProvider implements AuthenticationProvider {
 //    private AccountContextService accountContextService;
 
     @Autowired
-    private AccountRepository accountRepository;
+    private AccountService accountService;
+    @Autowired
+    private PasswordEncoder bCryptPasswordEncoder;
 
     @Override
+    //Lazy load 설정이 있기 때문에 @Transaction을 통해 묶어주어야 role이 lazy load가 되더라..
+    @Transactional
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         PreAuthorizationToken token = (PreAuthorizationToken)authentication;
 
         String userId = token.getUserId();
         String password = token.getPassword();
 
-        Account account = accountRepository.findByUserId(userId).orElseThrow(() -> new NoSuchElementException("계정 정보를 찾을 수 없습니다."));
+        Account account = accountService.findByUserId(userId);
         if(isCorrectPassword(password, account)) {
-            return PostAuthorizationToekn.getFromAccountContext(AccountContext.fromAccount(account));
+            return PostAuthorizationToken.getFromAccountContext(AccountContext.fromAccount(account));
         }
 
         throw new NoSuchElementException("인증 정보를 찾을 수 없습니다.");
@@ -46,6 +51,6 @@ public class FormLoginAuthenticationProvider implements AuthenticationProvider {
     }
 
     private boolean isCorrectPassword(String password, Account account) {
-        return CommonUtils.getBCryptPasswordEncoder().matches(password, account.getPassword());
+        return bCryptPasswordEncoder.matches(password, account.getPassword());
     }
 }

@@ -1,10 +1,8 @@
 package com.tram.springbootangularboard.security.filter;
 
-import com.tram.springbootangularboard.common.CommonUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tram.springbootangularboard.dto.FormLoginDto;
 import com.tram.springbootangularboard.security.token.PreAuthorizationToken;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
@@ -34,7 +32,8 @@ public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
     //인증 시도 시 프로바이더를 통해 인증 정보 유효성 검증
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-        FormLoginDto formLoginDto = CommonUtils.getObjectMapper().readValue(request.getReader(), FormLoginDto.class);
+        ObjectMapper objectMapper = new ObjectMapper();
+        FormLoginDto formLoginDto = objectMapper.readValue(request.getReader(), FormLoginDto.class);
         PreAuthorizationToken token = new PreAuthorizationToken(formLoginDto);
         //AuthenticationManager가 위의 PreAuthorizationToken 형태에 맞는 Provider를 찾아서 인증을 진행한다.
         return super.getAuthenticationManager().authenticate(token);
