@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 
 public class AccountContext extends User {
     private Account account;
-    public AccountContext(Account account, String userId, String password, Collection<? extends GrantedAuthority> authorities) {
-        super(userId, password, authorities);
+    public AccountContext(Account account, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+        super(email, password, authorities);
         this.account = account;
     }
 
@@ -22,7 +22,7 @@ public class AccountContext extends User {
     }
 
     public static AccountContext fromAccount(Account account) {
-        return new AccountContext(account, account.getUserId(), account.getPassword(), convertSimpleGrantedAuthorities(account.getUserRole()));
+        return new AccountContext(account, account.getEmail(), account.getPassword(), convertSimpleGrantedAuthorities(account.getUserRole()));
     }
 
     private static List<SimpleGrantedAuthority> convertSimpleGrantedAuthorities(List<UserRole> userRole) {

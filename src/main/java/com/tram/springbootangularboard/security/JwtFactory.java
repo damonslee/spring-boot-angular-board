@@ -20,7 +20,7 @@ public class JwtFactory {
         try {
             jwtToken = JWT.create().withIssuer("tram")
                     .withClaim("USERNAME", accountContext.getAccount().getUsername())
-                    .withClaim("USER_ID", accountContext.getAccount().getUserId())
+                    .withClaim("EMAIL", accountContext.getAccount().getEmail())
                     .withArrayClaim("AUTHORITIES", accountContext.getAuthorities().stream()
                             .map(r -> r.getAuthority()).toArray(String[]::new))
                     .sign(generateAlgorithm());

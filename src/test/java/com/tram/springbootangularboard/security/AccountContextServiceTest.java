@@ -32,8 +32,8 @@ public class AccountContextServiceTest {
      */
     @Test
     public void loadAccountByUserId() {
-        given(accountRepository.findByUserId("testId")).willReturn(Optional.ofNullable(Account.builder()
-                .userId("testId").password("password").userRole(Arrays.asList(UserRole.ROLE_USER)).build()));
+        given(accountRepository.findByEmail("testId")).willReturn(Optional.ofNullable(Account.builder()
+                .email("testId").password("password").userRole(Arrays.asList(UserRole.ROLE_USER)).build()));
         assertNotNull(accountContextService.loadAccountByUserId("testId"));
     }
 
@@ -43,8 +43,8 @@ public class AccountContextServiceTest {
     //TODO Exception 생성 이후 변경 필요
     @Test(expected = NoSuchElementException.class)
     public void loadAccountByUserIdExceptionTest() {
-        given(accountRepository.findByUserId("testId")).willReturn(Optional.ofNullable(Account.builder()
-                .userId("testId").password("password").userRole(Arrays.asList(UserRole.ROLE_USER)).build()));
+        given(accountRepository.findByEmail("testId")).willReturn(Optional.ofNullable(Account.builder()
+                .email("testId").password("password").userRole(Arrays.asList(UserRole.ROLE_USER)).build()));
         accountContextService.loadAccountByUserId("noId");
     }
 

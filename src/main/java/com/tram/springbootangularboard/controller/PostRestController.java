@@ -2,7 +2,7 @@ package com.tram.springbootangularboard.controller;
 
 import com.tram.springbootangularboard.domain.Post;
 import com.tram.springbootangularboard.domain.PostRepository;
-import com.tram.springbootangularboard.dto.PostsSaveRequestDto;
+import com.tram.springbootangularboard.dto.PostSaveRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -31,8 +31,8 @@ public class PostRestController {
     }
 
     @PostMapping("")
-    public ResponseEntity create(@RequestBody PostsSaveRequestDto postsSaveRequestDto) {
-        Post savedPost = postRepository.save(postsSaveRequestDto.toEntity());
+    public ResponseEntity create(@RequestBody PostSaveRequestDto postSaveRequestDto) {
+        Post savedPost = postRepository.save(postSaveRequestDto.toEntity());
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(URI.create("/api/posts/" + savedPost.getId()));
         return ResponseEntity.status(HttpStatus.CREATED).contentType(MediaType.APPLICATION_JSON_UTF8).headers(headers).build();

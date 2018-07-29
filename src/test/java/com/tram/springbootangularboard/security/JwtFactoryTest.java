@@ -27,7 +27,7 @@ public class JwtFactoryTest {
 
     @Test
     public void generateJwtToken() {
-        Account account = Account.builder().userId("tram").password("password")
+        Account account = Account.builder().email("tram").password("password")
                 .userRole(Arrays.asList(UserRole.ROLE_USER, UserRole.ROLE_ADMIN)).username("규남").build();
         String jwtToken = jwtFactory.generateJwtToken(AccountContext.fromAccount(account));
         log.info("jwtToken value, {}", jwtToken);

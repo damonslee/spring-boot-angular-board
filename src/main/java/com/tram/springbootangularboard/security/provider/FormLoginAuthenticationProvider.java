@@ -33,10 +33,10 @@ public class FormLoginAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         PreAuthorizationToken token = (PreAuthorizationToken)authentication;
 
-        String userId = token.getUserId();
+        String email = token.getEmail();
         String password = token.getPassword();
 
-        Account account = accountService.findByUserId(userId);
+        Account account = accountService.findByEmail(email);
         if(isCorrectPassword(password, account)) {
             return PostAuthorizationToken.getFromAccountContext(AccountContext.fromAccount(account));
         }
