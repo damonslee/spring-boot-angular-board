@@ -29,7 +29,7 @@ public class Account extends AuditorEntity {
     private String username;
 
     @Column(name = "account_role")
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection
     @Enumerated(value = EnumType.STRING)
     private List<UserRole> userRole = Arrays.asList(UserRole.ROLE_USER);
 
