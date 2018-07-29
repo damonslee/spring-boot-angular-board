@@ -28,6 +28,8 @@ public class FormLoginAuthenticationProvider implements AuthenticationProvider {
     private PasswordEncoder bCryptPasswordEncoder;
 
     @Override
+    //Lazy load 설정이 있기 때문에 @Transaction을 통해 묶어주어야 role이 lazy load가 되더라..
+    @Transactional
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         PreAuthorizationToken token = (PreAuthorizationToken)authentication;
 
