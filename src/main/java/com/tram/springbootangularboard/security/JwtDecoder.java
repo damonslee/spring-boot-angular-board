@@ -26,6 +26,7 @@ public class JwtDecoder {
     private JwtProperties jwtProperties;
 
     public AccountContext decodeToken(String token) {
+        //TODO 토큰이 유효하지 않은 경우 500에러가 발생하는데 이 부분이 수정되어야 할까?
         DecodedJWT decodedJWT = isValidToken(token).orElseThrow(() -> new InvalidJwtException("유효한 토큰이 아닙니다."));
         String username = decodedJWT.getClaim("USERNAME").asString();
         List<SimpleGrantedAuthority> authorities = decodedJWT.getClaim("AUTHORITIES")

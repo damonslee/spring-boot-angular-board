@@ -1,6 +1,6 @@
 package com.tram.springbootangularboard.security.handler;
 
-import com.tram.springbootangularboard.common.CommonUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tram.springbootangularboard.dto.TokenDto;
 import com.tram.springbootangularboard.security.AccountContext;
 import com.tram.springbootangularboard.security.JwtFactory;
@@ -24,6 +24,8 @@ import java.io.IOException;
 public class FormLoginAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     @Autowired
     private JwtFactory jwtFactory;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     /**
      * 인증 성공 시 jwt Token을 Response에 담아 반환한다.
@@ -48,6 +50,6 @@ public class FormLoginAuthenticationSuccessHandler implements AuthenticationSucc
     private void processResponse(HttpServletResponse response, TokenDto tokenDto) throws IOException {
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         response.setStatus(HttpStatus.OK.value());
-        response.getWriter().write(CommonUtils.getObjectMapper().writeValueAsString(tokenDto));
+        response.getWriter().write(objectMapper.writeValueAsString(tokenDto));
     }
 }
