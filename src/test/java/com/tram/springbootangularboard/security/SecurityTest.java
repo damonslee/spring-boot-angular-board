@@ -50,8 +50,8 @@ public class SecurityTest {
 
     @Test
     public void loginSuccessTest() throws Exception {
-        given(accountRepository.findByUserId("xmfpes")).willReturn(Optional.ofNullable(Account.builder()
-                .userId("xmfpes").password(bCryptPasswordEncoder.encode("1234")).username("kyuNam").userRole(Arrays.asList(UserRole.ROLE_USER)).build()));
+        given(accountRepository.findByEmail("xmfpes")).willReturn(Optional.ofNullable(Account.builder()
+                .email("xmfpes").password(bCryptPasswordEncoder.encode("1234")).username("kyuNam").userRole(Arrays.asList(UserRole.ROLE_USER)).build()));
         this.mockMvc.perform(post("/login")
                 .content(objectMapper.writeValueAsBytes(new FormLoginDto("xmfpes", "1234")))
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -63,8 +63,8 @@ public class SecurityTest {
 
     @Test(expected = NoSuchElementException.class)
     public void loginFailureTest() throws Exception {
-        given(accountRepository.findByUserId("xmfpes")).willReturn(Optional.ofNullable(Account.builder()
-                .userId("xmfpes").password(bCryptPasswordEncoder.encode("1234")).userRole(Arrays.asList(UserRole.ROLE_USER)).build()));
+        given(accountRepository.findByEmail("xmfpes")).willReturn(Optional.ofNullable(Account.builder()
+                .email("xmfpes").password(bCryptPasswordEncoder.encode("1234")).userRole(Arrays.asList(UserRole.ROLE_USER)).build()));
         this.mockMvc.perform(post("/login")
                 .content(objectMapper.writeValueAsBytes(new FormLoginDto("xmfpes", "5555")))
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)

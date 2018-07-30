@@ -38,7 +38,7 @@ public class ApiAuthorizationAcceptanceTest {
         assertThat(accountResponse.getHeaders().getLocation().getPath()).contains("/api/account");
 
         //로그인 후 토큰 값 얻음
-        ResponseEntity<String> formLoginResponse = template.postForEntity("/login", new FormLoginDto(AccountDto.USER_ID, AccountDto.PASSWORD), String.class);
+        ResponseEntity<String> formLoginResponse = template.postForEntity("/login", new FormLoginDto(AccountDto.EMAIL, AccountDto.PASSWORD), String.class);
 
         assertThat(formLoginResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(formLoginResponse.getBody()).isNotBlank();
@@ -51,7 +51,7 @@ public class ApiAuthorizationAcceptanceTest {
         ResponseEntity<AccountDto> accountInfoResponse = template.exchange("/api/accounts/current", HttpMethod.GET, httpEntity, AccountDto.class);
 
         assertThat(accountInfoResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(accountInfoResponse.getBody().getUsername()).isEqualTo(AccountDto.USERNAME);
+        assertThat(accountInfoResponse.getBody().getEmail()).isEqualTo(AccountDto.EMAIL);
     }
 
     @Test

@@ -31,7 +31,7 @@ public class SecurityLoginAcceptanceTest {
         assertThat(accountResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(accountResponse.getHeaders().getLocation().getPath()).contains("/api/account");
 
-        ResponseEntity<String> formLoginResponse = template.postForEntity("/login", new FormLoginDto(AccountDto.USER_ID, AccountDto.PASSWORD), String.class);
+        ResponseEntity<String> formLoginResponse = template.postForEntity("/login", new FormLoginDto(AccountDto.EMAIL, AccountDto.PASSWORD), String.class);
 
         assertThat(formLoginResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(formLoginResponse.getBody()).isNotBlank();

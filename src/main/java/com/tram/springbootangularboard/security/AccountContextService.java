@@ -16,8 +16,8 @@ public class AccountContextService implements UserDetailsService {
     private AccountRepository accountRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        Account account =  accountRepository.findByUserId(userId).orElseThrow(() -> new NoSuchElementException("해당하는 계정을 찾을 수 없습니다."));
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Account account =  accountRepository.findByEmail(email).orElseThrow(() -> new NoSuchElementException("해당하는 계정을 찾을 수 없습니다."));
         return getAccountContext(account);
     }
 

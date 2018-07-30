@@ -24,7 +24,7 @@ public class AccountService {
     }
 
     @Transactional(readOnly = true)
-    public Account findByUserId(String userId) {
-        return accountRepository.findByUserId(userId).orElseThrow(() -> new NoSuchElementException("계정 정보를 찾을 수 없습니다."));
+    public Account findByEmail(String email) {
+        return accountRepository.findByEmail(email).orElseThrow(() -> new NoSuchElementException("계정 정보를 찾을 수 없습니다."));
     }
 }

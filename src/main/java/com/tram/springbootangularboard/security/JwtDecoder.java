@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.tram.springbootangularboard.config.properties.JwtProperties;
 import com.tram.springbootangularboard.domain.UserRole;
+import com.tram.springbootangularboard.dto.AccountDto;
 import com.tram.springbootangularboard.exception.InvalidJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,9 +30,14 @@ public class JwtDecoder {
         //TODO 토큰이 유효하지 않은 경우 500에러가 발생하는데 이 부분이 수정되어야 할까?
         DecodedJWT decodedJWT = isValidToken(token).orElseThrow(() -> new InvalidJwtException("유효한 토큰이 아닙니다."));
         String username = decodedJWT.getClaim("USERNAME").asString();
+        String email = decodedJWT.getClaim("EMAIL").asString();
+
+        AccountDto accountDto = new AccountDto();
+        accountDto.email(email).username(username);
+
         List<SimpleGrantedAuthority> authorities = decodedJWT.getClaim("AUTHORITIES")
                 .asList(UserRole.class).stream().map(userRole -> new SimpleGrantedAuthority(userRole.getRoleName())).collect(Collectors.toList());
-        return new AccountContext(username, "0000", authorities);
+        return new AccountContext(accountDto.toEntity(), email, "0000", authorities);
     }
 
     private Optional<DecodedJWT> isValidToken(String token) {

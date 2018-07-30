@@ -2,7 +2,7 @@ package com.tram.springbootangularboard.dto
 
 import com.tram.springbootangularboard.domain.Post
 
-data class PostsSaveRequestDto(
+data class PostSaveRequestDto(
         var title: String = "",
         var content: String = "",
         var author: String = ""

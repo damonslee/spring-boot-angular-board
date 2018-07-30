@@ -21,7 +21,7 @@ public class AccountRestController {
     public ResponseEntity readCurrentAccount(Authentication authentication) {
         PostAuthorizationToken token = (PostAuthorizationToken)authentication;
         AccountDto accountDto = new AccountDto();
-        accountDto.setUsername(token.getAccountContext().getUsername());
+        accountDto.setEmail(token.getAccountContext().getAccount().getEmail());
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(accountDto);
     }
 }

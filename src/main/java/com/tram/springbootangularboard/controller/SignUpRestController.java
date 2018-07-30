@@ -24,7 +24,7 @@ public class SignUpRestController {
     public ResponseEntity create(@RequestBody AccountDto accountDto) {
         Account savedAccount = accountService.save(accountDto);
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(URI.create("/api/account/" + savedAccount.getId()));
+        headers.setLocation(URI.create("/api/accounts/" + savedAccount.getId()));
         return ResponseEntity.status(HttpStatus.CREATED).contentType(MediaType.APPLICATION_JSON_UTF8).headers(headers).build();
     }
 }

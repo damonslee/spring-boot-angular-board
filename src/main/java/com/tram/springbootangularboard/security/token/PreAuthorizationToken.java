@@ -10,7 +10,7 @@ public class PreAuthorizationToken extends UsernamePasswordAuthenticationToken {
     public PreAuthorizationToken(FormLoginDto formLoginDto) {
         this(formLoginDto.getUserId(), formLoginDto.getPassword());
     }
-    public String getUserId() {
+    public String getEmail() {
         return (String)super.getPrincipal();
     }
 

@@ -13,14 +13,14 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Builder
-public class Account {
+public class Account extends AuditorEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "account_user_id", unique = true, nullable = false)
-    private String userId;
+    @Column(name = "account_email", unique = true, nullable = false)
+    private String email;
 
     @Column(name = "account_password", nullable = false)
     private String password;
@@ -39,8 +39,8 @@ public class Account {
     @Column(name = "account_social_profile_link")
     private String socialProfileLink;
 
-    public Account(String userId, String password, String username) {
-        this.userId = userId;
+    public Account(String email, String password, String username) {
+        this.email = email;
         this.password = password;
         this.username = username;
     }
