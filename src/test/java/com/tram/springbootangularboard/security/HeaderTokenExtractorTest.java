@@ -17,14 +17,17 @@ public class HeaderTokenExtractorTest {
 
     @Autowired
     private HeaderTokenExtractor headerTokenExtractor;
+
     @Test
     public void extract() {
         assertThat(headerTokenExtractor.extract("Bearer tokentest")).isEqualTo("tokentest");
     }
-    @Test(expected = InvalidJwtException.class)
+
+    @Test(expected = NullPointerException.class)
     public void extractNullTokenValueTest() {
         headerTokenExtractor.extract(null);
     }
+
     @Test(expected = InvalidJwtException.class)
     public void extractShortTokenValueTest() {
         headerTokenExtractor.extract("1234");

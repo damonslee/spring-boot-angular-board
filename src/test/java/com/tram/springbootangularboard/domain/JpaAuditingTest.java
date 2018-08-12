@@ -33,15 +33,16 @@ public class JpaAuditingTest {
 
     @Test
     public void createdByAndCreateDateTest() throws IOException {
+        String email = "test1@naver.com";
         //회원가입 진행
         ResponseEntity<Account> accountResponse = template.postForEntity("/sign-up",
-                AccountDto.Companion.defaultAccountDto(), Account.class);
+                AccountDto.Companion.defaultAccountDto().email(email), Account.class);
 
         assertThat(accountResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(accountResponse.getHeaders().getLocation().getPath()).contains("/api/account");
 
         //로그인 후 토큰 값 얻음
-        ResponseEntity<String> formLoginResponse = template.postForEntity("/login", new FormLoginDto(AccountDto.EMAIL, AccountDto.PASSWORD), String.class);
+        ResponseEntity<String> formLoginResponse = template.postForEntity("/login", new FormLoginDto(email, AccountDto.PASSWORD), String.class);
 
         assertThat(formLoginResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(formLoginResponse.getBody()).isNotBlank();
@@ -64,7 +65,9 @@ public class JpaAuditingTest {
                 .getLocation().getPath().replace("/api/posts/", ""))).get();
         log.info("createdBy, {}", createdPost.getCreatedBy().getEmail());
         log.info("createdDateTime, {}", createdPost.getCreatedBy().getCreatedDate());
-        assertThat(createdPost.getCreatedBy().getEmail()).isEqualTo(AccountDto.EMAIL);
+        assertThat(createdPost.getCreatedBy().getEmail()).isEqualTo(email);
+        assertThat(createdPost.getLastModifiedBy().getEmail()).isEqualTo(email);
         assertThat(createdPost.getCreatedDate()).isNotNull();
+        assertThat(createdPost.getLastModifiedDate()).isNotNull();
     }
 }

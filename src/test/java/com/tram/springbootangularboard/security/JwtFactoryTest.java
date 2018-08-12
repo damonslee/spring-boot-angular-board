@@ -18,7 +18,6 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = JwtFactory.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
-//ConfigrationProperties는 Test에서 따로 아래처럼 받아와야 사용 가능한 것 같다.
 @EnableConfigurationProperties(JwtProperties.class)
 public class JwtFactoryTest {
     @Autowired

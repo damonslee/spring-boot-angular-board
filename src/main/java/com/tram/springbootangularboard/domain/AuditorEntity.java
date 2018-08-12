@@ -14,7 +14,7 @@ import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
-@EntityListeners(value = { AuditingEntityListener.class })
+@EntityListeners(value = {AuditingEntityListener.class})
 @Getter
 public abstract class AuditorEntity {
     @Column(nullable = false, updatable = false)
@@ -25,6 +25,7 @@ public abstract class AuditorEntity {
     @ManyToOne
     @CreatedBy
     private Account createdBy;
-    @ManyToOne @LastModifiedBy
+    @ManyToOne
+    @LastModifiedBy
     private Account lastModifiedBy;
 }

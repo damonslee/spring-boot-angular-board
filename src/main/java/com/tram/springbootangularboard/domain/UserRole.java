@@ -17,8 +17,4 @@ public enum UserRole {
     public boolean isCorrectName(String roleName) {
         return this.roleName.equalsIgnoreCase(roleName);
     }
-
-    public UserRole getUserRoleByName(String roleName) {
-        return Arrays.stream(values()).filter(r -> r.isCorrectName(this.roleName)).findFirst().orElseThrow(() -> new IllegalArgumentException("해당하는 권한 정보를 찾을 수 없습니다."));
-    }
 }
