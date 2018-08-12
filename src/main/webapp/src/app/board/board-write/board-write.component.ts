@@ -30,11 +30,9 @@ export class BoardWriteComponent implements OnInit {
         'addImageBlobHook': function(blob, callback) {
           //이미지 블롭을 이용해 서버 연동 후 콜백실행
           //callback('이미지URL');
-          console.log('hello');
-          console.log(blob);
         }
       },
-      height: '800px'
+      height: '600px'
     });
   }
 
