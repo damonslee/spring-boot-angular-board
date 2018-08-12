@@ -20,6 +20,7 @@ import java.net.URI;
 public class SignUpRestController {
     @Autowired
     private AccountService accountService;
+
     @PostMapping
     public ResponseEntity create(@RequestBody AccountDto accountDto) {
         Account savedAccount = accountService.save(accountDto);

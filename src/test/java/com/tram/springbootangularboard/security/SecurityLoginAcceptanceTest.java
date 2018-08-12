@@ -25,13 +25,14 @@ public class SecurityLoginAcceptanceTest {
 
     public static final Logger log =  LoggerFactory.getLogger(SecurityLoginAcceptanceTest.class);
     @Test
-    public void loginSuccessTest() {
-        ResponseEntity accountResponse = template.postForEntity("/sign-up", AccountDto.Companion.defaultAccountDto(), String.class);
+    public void signUpAndLoginSuccessTest() {
+        String email = "sign-up@naver.com";
+        ResponseEntity accountResponse = template.postForEntity("/sign-up", AccountDto.Companion.defaultAccountDto().email("sign-up@naver.com"), String.class);
 
         assertThat(accountResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(accountResponse.getHeaders().getLocation().getPath()).contains("/api/account");
 
-        ResponseEntity<String> formLoginResponse = template.postForEntity("/login", new FormLoginDto(AccountDto.EMAIL, AccountDto.PASSWORD), String.class);
+        ResponseEntity<String> formLoginResponse = template.postForEntity("/login", new FormLoginDto(email, AccountDto.PASSWORD), String.class);
 
         assertThat(formLoginResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(formLoginResponse.getBody()).isNotBlank();

@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.*;
 public class AccountRestController {
     @Autowired
     private AccountService accountService;
+
     @GetMapping("/current")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity readCurrentAccount(Authentication authentication) {
-        PostAuthorizationToken token = (PostAuthorizationToken)authentication;
+        PostAuthorizationToken token = (PostAuthorizationToken) authentication;
         AccountDto accountDto = new AccountDto();
         accountDto.setEmail(token.getAccountContext().getAccount().getEmail());
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(accountDto);

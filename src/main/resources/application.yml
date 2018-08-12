@@ -1,7 +1,6 @@
 spring:
   profiles:
     active: dev
-
 ---
 spring:
   profiles: local
@@ -31,9 +30,6 @@ jwt:
   secret-key: jwtdevlopkey
 
 ---
-spring:
-  profiles: real
-
 spring:
   profiles:
     include: real-db
