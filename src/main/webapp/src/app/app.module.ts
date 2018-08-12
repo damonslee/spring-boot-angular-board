@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 
 import { AppComponent } from './app.component';
-import { ClarityModule } from "@clr/angular";
+import { CoreModule } from './core/core.module';
 
 
 @NgModule({
@@ -12,7 +12,7 @@ import { ClarityModule } from "@clr/angular";
   ],
   imports: [
     BrowserModule,
-    ClarityModule
+    CoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]
